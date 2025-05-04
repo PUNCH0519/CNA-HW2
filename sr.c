@@ -136,8 +136,8 @@ void A_input(struct pkt packet)
         /* Skip over every slot that has already been individually ACKed        */
         while (windowcount > 0 && acked[buffer[windowfirst].seqnum])
         {
-          windowfirst  = (windowfirst + 1) % WINDOWSIZE;   // move window head
-          windowcount--;                                   // shrink window
+          windowfirst  = (windowfirst + 1) % WINDOWSIZE;   /*move window head*/ 
+          windowcount--;                                   /*shrink window*/ 
         }
 
     /* start timer again if there are still more unacked packets in window */
@@ -185,7 +185,8 @@ void A_init(void)
 		   */
   windowcount = 0;
   /* initialise per-packet bookkeeping for Selective Repeat */
-  for (int i = 0; i < SEQSPACE; ++i) {
+  int i; 
+  for (i = 0; i < SEQSPACE; ++i) {
     acked[i]    = false;
     sendtime[i] = 0.0f;
   }
