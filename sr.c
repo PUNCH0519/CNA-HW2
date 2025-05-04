@@ -140,7 +140,7 @@ void A_input(struct pkt packet)
           windowcount--;                                   // shrink window
         }
 
-        /* Re-arm timer: stop whatever is running, then restart if needed       */
+    /* start timer again if there are still more unacked packets in window */
         stoptimer(A);
         if (windowcount > 0)
           starttimer(A, RTT);
@@ -230,8 +230,9 @@ void B_input(struct pkt packet)
     }
 
     /* send an ACK for the received packet */
-    sendpkt.acknum = packet.seqnum;
-    sendpkt.acknum = NOTINUSE; /* ACK is not used in this protocol */
+    sendpkt.seqnum = NOTINUSE;        /* we don't use seqnum for pure ACKs */
+    sendpkt.acknum = packet.seqnum;   /* echo back the packet's seq as ACK */
+
 
     /* we don't have any data to send.  fill payload with 0's */
     for ( i=0; i<20 ; i++ )
