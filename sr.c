@@ -61,6 +61,7 @@ static struct pkt buffer[WINDOWSIZE];  /* array for storing packets waiting for 
 static int windowfirst, windowlast;    /* array indexes of the first/last packet awaiting ACK */
 static int windowcount;                /* the number of packets currently awaiting an ACK */
 static int A_nextseqnum;               /* the next sequence number to be used by the sender */
+static bool acked[SEQSPACE];            /* remembers which sequence numbers have been ACKed */
 
 /* called from layer 5 (application layer), passed the message to be sent to other side */
 void A_output(struct msg message)
@@ -126,7 +127,7 @@ void A_input(struct pkt packet)
       if (TRACE > 0 )
         printf("----A: ACK %d is not a duplicate\n",packet.acknum);
       new_ACKs++;
-      acked[packet.acknum] = true; // mark this sequence number as ACKed so the sender can slide its window
+      acked[packet.acknum] = true; /*mark this sequence number as ACKed so the sender can slide its window*/ 
     
       /* If the ACK refers to the very first packet in the window, we may slide */
       if (packet.acknum == buffer[windowfirst].seqnum)
@@ -180,6 +181,12 @@ void A_init(void)
 		     so initially this is set to -1
 		   */
   windowcount = 0;
+  /* initialise per-packet bookkeeping for Selective Repeat */
+  for (int i = 0; i < SEQSPACE; ++i) {
+    acked[i]    = false;
+    sendtime[i] = 0.0f;
+  }
+
 }
 
 /********* Receiver (B)  variables and procedures ************/
