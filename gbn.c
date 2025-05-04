@@ -1,11 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
-/* Compatible with C89 boolean definitions to avoid _Bool warnings with <stdbool.h> */
-typedef enum { false = 0, true = 1 } bool;
-
+#include <stdbool.h>
 #include "emulator.h"
 #include "gbn.h"
-
 
 /* ******************************************************************
    Go Back N protocol.  Adapted from J.F.Kurose
