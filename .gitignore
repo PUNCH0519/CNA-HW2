@@ -1,0 +1,5 @@
+gbn
+sr
+*.o
+*.log
+core
