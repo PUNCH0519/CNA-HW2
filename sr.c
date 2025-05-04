@@ -163,6 +163,8 @@ void A_timerinterrupt(void)
     printf("----A: time out,resend packets!\n");
 
   /* Retransmit the left-most un-ACKed packet in the send window (buffer[windowfirst]) */
+  if (TRACE > 0)
+    printf("---A: resending packet %d\n", buffer[windowfirst].seqnum);
 
 
   tolayer3(A, buffer[windowfirst]);
