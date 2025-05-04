@@ -115,8 +115,7 @@ void A_output(struct msg message)
 */
 void A_input(struct pkt packet)
 {
-  int ackcount = 0;
-  int i;
+  /*int ackcount = 0;*/
 
   /* if received ACK is not corrupted */
   if (!IsCorrupted(packet)) 
